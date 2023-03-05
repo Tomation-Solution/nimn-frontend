@@ -25,7 +25,10 @@ export const ChatSlice = createSlice({
     initialState,
     reducers:{
         addChat:(state,action)=>{
-            state.chat =[...state.chat,action.payload]
+            let chat = [...state.chat,action.payload]
+            let remove_chat_duplicate = new Set(chat)
+            chat =  Array.from(remove_chat_duplicate)
+            state.chat =chat
         },
         clearChat:(state,action)=>{
             state.chat=[]
