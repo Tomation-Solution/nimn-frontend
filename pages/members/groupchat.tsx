@@ -20,7 +20,7 @@ import { getUserOrNull, UserType } from "../../utils/extraFunction";
 
 type ChatRoomType ={
     'type':'general'|'commitee'|'exco',
-    'value':number,
+    'value':number |string,
     'display':string,
 }
 
@@ -35,9 +35,10 @@ const GroupChat:NextPage = ()=>{
     const [text, setText] = useState('')
     const [user, setUser] = useState('')
     const [chatroom,setChatRoom] = useState<null|ChatRoomType>(null)
-    const [logged_in_user,setLoggedInUser] = useState(null)
     const [web_socket,setWeb_socket] = useState(null)
     const [connecting,setConnecting] = useState(false)
+    const [logged_in_user,setLoggedInUser] =useState<null|UserType>()
+
     const handleClose = () => {
         setOpen(false);
       };
@@ -62,7 +63,10 @@ const GroupChat:NextPage = ()=>{
 
     }
 
+    useEffect(()=>{
+        setLoggedInUser(getUserOrNull())
 
+    },[])
     useEffect(()=>{
         if(web_socket){
             //to avoid duplicate connection
@@ -105,6 +109,7 @@ const GroupChat:NextPage = ()=>{
             }))
           };
     }
+    console.log({logged_in_user})
     return (
         <DashboardLayout title='Group Chat'>
             <Grid item   style={{'width':'100%'}}>
@@ -134,8 +139,31 @@ const GroupChat:NextPage = ()=>{
                         name={'General Chat'} message={'welcome to...'} />
                     </Grid>
 
-              
-                    
+                    {
+                        logged_in_user?.commitee.map((d,index)=>(
+                            <Grid 
+                            key={index}
+                            onClick={()=>{
+                                dispatch(clearChat({}))
+                                setChatRoom({
+                                    'type':'commitee',
+                                    'display':d.name,
+                                    'value':d.id// here we dont needd the value at all the word  general is enough
+                                })
+                                // setOpen(true)
+                                // setUser(e)
+                                // setConnecting(true)
+                            }} >
+                                <ChatCard 
+                                // bg={e.id == user.id ?'light-green-bg':'light-grey-bg'} 
+                                bg={chatroom?.value===`${d.id}comittee`?'light-green-bg':'light-grey-bg'} 
+                                time={''} date={''} 
+                                // image={e.image} 
+                                name={d?.name} message={'welcome to...'} />
+                            </Grid>
+                        ))
+                    }
+                 
                 </Grid>
                 <Box style={{'width':'80%'}}>
                     <GroupChatPane

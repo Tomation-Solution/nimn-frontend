@@ -11,19 +11,17 @@ export type UserType = {
       "name": string,
       "id": number
   }[],
-  "council": [
-      {
+  "council": {
           "name": string,
           "id": number,
           "chapter": any
-      }[]
-  ],
-  "commitee": [
+      }[],
+  "commitee": 
       {
           "name": string,
           "id": number
       }[]
-  ],
+  ,
   "user_id": number,
   "member_id": string,
   "profile_image":string | null
