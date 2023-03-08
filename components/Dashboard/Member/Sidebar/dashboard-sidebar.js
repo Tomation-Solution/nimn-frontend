@@ -202,7 +202,7 @@ const content = (
       header='Other Environment'
       >
         {
-          council.map((data,index)=>(
+          council?.map((data,index)=>(
             <div 
             key={index}
             style={{'display':'flex','justifyContent':'spaceBetween','fontSize':'.9rem','margin':'.4rem 0'}}
